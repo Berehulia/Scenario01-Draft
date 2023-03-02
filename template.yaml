@@ -1,0 +1,59 @@
+Resources:
+
+  FunctionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+            Effect: "Allow"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+        - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+      RoleName: "serverless2049-iam-role-FunctionRole"
+
+  MainFunction:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      Code:
+        S3Bucket: "serverless2049-scenario01"
+        S3Key: "lambda/mainfunction/main-function-0.0.1.jar"
+      Environment:
+        Variables:
+          DYNAMO_DB_TABLE_NAME: "serverless2049-dynamodb-table-Database"
+      FunctionName: "serverless2049-lambda-function-MainFunction"
+      Handler: "com.lineup.function.main.Function"
+      MemorySize: "512"
+      Role: !GetAtt FunctionRole.Arn
+      Runtime: "java11"
+      Timeout: "30"
+
+  TestFunction:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      Code:
+        S3Bucket: "serverless2049-scenario01"
+        S3Key: "lambda/testfunction/test-function-0.0.1.jar"
+      FunctionName: "serverless2049-lambda-function-TestFunction"
+      Handler: "com.lineup.function.test.Function"
+      MemorySize: "512"
+      Role: !GetAtt FunctionRole.Arn
+      Runtime: "java11"
+      Timeout: "30"
+
+  Database:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      BillingMode: "PAY_PER_REQUEST"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      TableName: "serverless2049-dynamodb-table-Database"
