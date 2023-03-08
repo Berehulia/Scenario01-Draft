@@ -8,7 +8,7 @@ Globals:
       AuthType: NONE
     Timeout: 30
     Runtime: java11
-    MemorySize: 512
+    MemorySize: 1024
 
 Resources:
 
@@ -31,6 +31,9 @@ Resources:
       FunctionName: serverless2049-lambda-function-TestFunction
       CodeUri: ./test-function
       Handler: com.lineup.function.test.Function
+      Environment:
+        Variables:
+          MAIN_FUNCTION_URL: !GetAtt MainFunctionUrl.FunctionUrl
       Policies:
         - CloudWatchLogsFullAccess
 

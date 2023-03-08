@@ -6,7 +6,6 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class Function implements RequestHandler < String, String > {
 
@@ -22,8 +21,6 @@ public class Function implements RequestHandler < String, String > {
 
     var item = Map.of(
         "id",
-        AttributeValue.fromS( UUID.randomUUID().toString() ),
-        "message",
         AttributeValue.fromS( message )
     );
 
