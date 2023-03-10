@@ -6,9 +6,7 @@ Globals:
   Function:
     FunctionUrlConfig:
       AuthType: NONE
-    Timeout: 30
     Runtime: java11
-    MemorySize: 1024
 
 Resources:
 
@@ -17,10 +15,12 @@ Resources:
     Properties:
       FunctionName: serverless2049-lambda-function-MainFunction
       CodeUri: ./main-function
-      Handler: com.lineup.function.main.Function
+      Handler: com.lineup.scenario01.function.main.Function
+      Timeout: 30
+      MemorySize: 512
       Environment:
         Variables:
-          DYNAMO_DB_TABLE_NAME: serverless2049-dynamodb-table-Database
+          TABLE_NAME: serverless2049-dynamodb-table-Database
       Policies:
         - AmazonDynamoDBFullAccess
         - CloudWatchLogsFullAccess
@@ -30,7 +30,9 @@ Resources:
     Properties:
       FunctionName: serverless2049-lambda-function-TestFunction
       CodeUri: ./test-function
-      Handler: com.lineup.function.test.Function
+      Handler: com.lineup.scenario01.function.test.Function
+      Timeout: 600
+      MemorySize: 10240
       Environment:
         Variables:
           MAIN_FUNCTION_URL: !GetAtt MainFunctionUrl.FunctionUrl
